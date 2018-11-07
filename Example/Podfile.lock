@@ -1,0 +1,23 @@
+PODS:
+  - Alamofire (4.8.2)
+  - Wildlink (0.1.0):
+    - Alamofire (~> 4.8.2)
+
+DEPENDENCIES:
+  - Wildlink (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+
+EXTERNAL SOURCES:
+  Wildlink:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  Wildlink: a05b3e313a0a3680895606fd662505b49b4a71a6
+
+PODFILE CHECKSUM: 819afd01f8795336531ae3de325ba50a3dc12e6d
+
+COCOAPODS: 1.7.2
