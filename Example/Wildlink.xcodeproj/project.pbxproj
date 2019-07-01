@@ -7,18 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		023E698C21895287003FFA64 /* CommissionStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E698A2189525C003FFA64 /* CommissionStatsTests.swift */; };
-		02417E9A218964DF00857482 /* WildlinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02417E982189649700857482 /* WildlinkTests.swift */; };
-		026FA8BD219A8B690025D51F /* CommissionDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026FA8BB219A8B620025D51F /* CommissionDetailsTests.swift */; };
-		02B0F4A521A5231F00EEE9A5 /* MerchantTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B0F4A421A5231F00EEE9A5 /* MerchantTests.swift */; };
-		02F35AFE21955E3800FB605C /* ClickStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F35AFC21955E0F00FB605C /* ClickStatsTests.swift */; };
 		49E298CEFE405073370A0C3C /* Pods_Wildlink_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B5670318A6D5D45529A1298 /* Pods_Wildlink_Example.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
-		CA4A30095328F664CB9EE4C7 /* Pods_Wildlink_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B13EDE72668635CC82FB646B /* Pods_Wildlink_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,11 +26,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		023E698A2189525C003FFA64 /* CommissionStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommissionStatsTests.swift; sourceTree = "<group>"; };
-		02417E982189649700857482 /* WildlinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildlinkTests.swift; sourceTree = "<group>"; };
-		026FA8BB219A8B620025D51F /* CommissionDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommissionDetailsTests.swift; sourceTree = "<group>"; };
-		02B0F4A421A5231F00EEE9A5 /* MerchantTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantTests.swift; sourceTree = "<group>"; };
-		02F35AFC21955E0F00FB605C /* ClickStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClickStatsTests.swift; sourceTree = "<group>"; };
 		1B5670318A6D5D45529A1298 /* Pods_Wildlink_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wildlink_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* Wildlink_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wildlink_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -46,15 +35,11 @@
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* Wildlink_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Wildlink_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76E5F8B7042475A454F54934 /* Wildlink.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Wildlink.podspec; path = ../Wildlink.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		7A0238D73297FC83C4EE233B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		807ECB05FF0DE7F330B29B79 /* Pods-Wildlink_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wildlink_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Wildlink_Example/Pods-Wildlink_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		9E71604798F2009321675667 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		B13EDE72668635CC82FB646B /* Pods_Wildlink_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wildlink_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C63CEDC72C5FAE02F609F824 /* Pods-Wildlink_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wildlink_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wildlink_Example/Pods-Wildlink_Example.release.xcconfig"; sourceTree = "<group>"; };
-		EF2D3435D4B7ABB49983B5AB /* Pods-Wildlink_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wildlink_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Wildlink_Tests/Pods-Wildlink_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		F4EEF21AE7C401054C0CB94C /* Pods-Wildlink_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wildlink_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wildlink_Tests/Pods-Wildlink_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +55,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA4A30095328F664CB9EE4C7 /* Pods_Wildlink_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,8 +66,6 @@
 			children = (
 				807ECB05FF0DE7F330B29B79 /* Pods-Wildlink_Example.debug.xcconfig */,
 				C63CEDC72C5FAE02F609F824 /* Pods-Wildlink_Example.release.xcconfig */,
-				EF2D3435D4B7ABB49983B5AB /* Pods-Wildlink_Tests.debug.xcconfig */,
-				F4EEF21AE7C401054C0CB94C /* Pods-Wildlink_Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -92,7 +74,6 @@
 			isa = PBXGroup;
 			children = (
 				1B5670318A6D5D45529A1298 /* Pods_Wildlink_Example.framework */,
-				B13EDE72668635CC82FB646B /* Pods_Wildlink_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -102,7 +83,6 @@
 			children = (
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for Wildlink */,
-				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				04A66947BFEFAB7505BF99F6 /* Pods */,
 				11E240593D5C663CB09C3AFA /* Frameworks */,
@@ -136,27 +116,6 @@
 			isa = PBXGroup;
 			children = (
 				607FACD41AFB9204008FA782 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		607FACE81AFB9204008FA782 /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				02F35AFC21955E0F00FB605C /* ClickStatsTests.swift */,
-				026FA8BB219A8B620025D51F /* CommissionDetailsTests.swift */,
-				023E698A2189525C003FFA64 /* CommissionStatsTests.swift */,
-				02B0F4A421A5231F00EEE9A5 /* MerchantTests.swift */,
-				02417E982189649700857482 /* WildlinkTests.swift */,
-				607FACE91AFB9204008FA782 /* Supporting Files */,
-			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		607FACE91AFB9204008FA782 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				607FACEA1AFB9204008FA782 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -197,7 +156,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Wildlink_Tests" */;
 			buildPhases = (
-				86E8599CD361BC6E5C5F9A5B /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
@@ -296,24 +254,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Wildlink_Example/Pods-Wildlink_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		86E8599CD361BC6E5C5F9A5B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Wildlink_Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		DA25BA636ABEF657AEEDE402 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -348,11 +288,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02F35AFE21955E3800FB605C /* ClickStatsTests.swift in Sources */,
-				026FA8BD219A8B690025D51F /* CommissionDetailsTests.swift in Sources */,
-				02B0F4A521A5231F00EEE9A5 /* MerchantTests.swift in Sources */,
-				023E698C21895287003FFA64 /* CommissionStatsTests.swift in Sources */,
-				02417E9A218964DF00857482 /* WildlinkTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,7 +458,6 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EF2D3435D4B7ABB49983B5AB /* Pods-Wildlink_Tests.debug.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 4YY6Q3X8FF;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -542,7 +476,6 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4EEF21AE7C401054C0CB94C /* Pods-Wildlink_Tests.release.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 4YY6Q3X8FF;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
