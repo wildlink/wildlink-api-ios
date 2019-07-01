@@ -31,7 +31,7 @@ platform:ios, '10.0'
 
 
 target 'Wildlink_Example' do
-  pod 'Wildlink', '~> 1.0.1'
+  pod 'Wildlink', '~> 1.0.2'
 end
 ```
 
