@@ -73,7 +73,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     public weak var delegate: WildlinkDelegate?
     
     private init(){
-        self.baseUrl = APIConstants.baseUrlDev
+        self.baseUrl = APIConstants.baseUrlProd
     }
     
     // Initialize the Wildlink SDK using an AppID and App Secret. Optionally accepts a UUID previously given by the SDK.
@@ -87,7 +87,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     //                                  still maintaining the history of this user (not considered a new device). `nil` by
     //                                  default.
     public func initialize(appId: String, appSecret: String, wildlinkDeviceToken: String? = nil, wildlinkDeviceKey: String? = nil) {
-        self.baseUrl = APIConstants.baseUrlDev
+        self.baseUrl = APIConstants.baseUrlProd
         self.deviceKey = wildlinkDeviceKey
         Wildlink.appID = appId
         Wildlink.apiKey = appSecret
