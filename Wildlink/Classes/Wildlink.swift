@@ -73,7 +73,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     public weak var delegate: WildlinkDelegate?
     
     private init(){
-        self.baseUrl = APIConstants.baseUrlDev
+        self.baseUrl = APIConstants.baseUrlProd
     }
     
     // Initialize the Wildlink SDK using an AppID and App Secret. Optionally accepts a UUID previously given by the SDK.
@@ -87,7 +87,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     //                                  still maintaining the history of this user (not considered a new device). `nil` by
     //                                  default.
     public func initialize(appId: String, appSecret: String, wildlinkDeviceToken: String? = nil, wildlinkDeviceKey: String? = nil) {
-        self.baseUrl = APIConstants.baseUrlDev
+        self.baseUrl = APIConstants.baseUrlProd
         self.deviceKey = wildlinkDeviceKey
         Wildlink.appID = appId
         Wildlink.apiKey = appSecret
@@ -128,6 +128,8 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         ]
         
         sessionManager.request(queryUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .validate(statusCode: 200..<300)
+            .validate(contentType: ["application/json"])
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
@@ -141,9 +143,13 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
                     
                 case .failure(let error):
+                    if let data = response.data,
+                        let info = String(data: data, encoding: .utf8) {
+                        Logger.error(info)
+                    }
                     completion(nil, error as Error)
                 }
-        }
+            }
     }
     
     // Generate a Wildlink URL string from a string object. Helper wrapper around the URL version.
@@ -183,7 +189,9 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         }
         
         sessionManager.request(queryUrl, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: headers)
-            .responseJSON {response in
+            .validate(statusCode: 200..<300)
+            .validate(contentType: ["application/json"])
+            .responseJSON { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? Array<[String: Any]> {
@@ -193,7 +201,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     } else {
                         completion(nil, WildlinkError.invalidResponse)
                     }
-                    
+
                 case .failure(let error):
                     if let data = response.data,
                         let info = String(data: data, encoding: .utf8) {
@@ -201,7 +209,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
                     completion(nil, error as Error)
                 }
-        }
+            }
     }
     
     // Get the commission statistics for this user.
@@ -216,6 +224,8 @@ public class Wildlink: RequestAdapter, RequestRetrier {
             ]
         
         sessionManager.request(queryUrl, method: .get, parameters: [:], encoding: URLEncoding.default, headers: headers)
+            .validate(statusCode: 200..<300)
+            .validate(contentType: ["application/json"])
             .responseJSON {response in
                 switch response.result {
                 case .success(let value):
@@ -234,7 +244,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
                     completion(nil, error as Error)
                 }
-        }
+            }
     }
     
     // Get the details about commissions earned by the user.
@@ -249,6 +259,8 @@ public class Wildlink: RequestAdapter, RequestRetrier {
             ]
         
         sessionManager.request(queryUrl, method: .get, parameters: [:], encoding: URLEncoding.default, headers: headers)
+            .validate(statusCode: 200..<300)
+            .validate(contentType: ["application/json"])
             .responseJSON {response in
                 switch response.result {
                 case .success(let value):
@@ -267,7 +279,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
                     completion(nil, error as Error)
                 }
-        }
+            }
     }
     
     public func searchMerchants(ids: [String], names: [String], q: String?, disabled: Bool?, featured: Bool?, sortBy: WildlinkSortBy?, sortOrder: WildlinkSortOrder?, limit: Int?, _ completion: @escaping (_ merchants: [Merchant], _ error: Error?) -> ()) {
@@ -311,6 +323,8 @@ public class Wildlink: RequestAdapter, RequestRetrier {
             ]
         
         sessionManager.request(queryUrl, method: .get, parameters: [:], encoding: URLEncoding.default, headers: headers)
+            .validate(statusCode: 200..<300)
+            .validate(contentType: ["application/json"])
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
@@ -326,7 +340,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
                     completion([], error as Error)
                 }
-        }
+            }
     }
     
     public func getMerchantByID(_ id: String, _ completion: @escaping (_ merchant: Merchant?, _ error: Error?) -> ()) {
@@ -338,6 +352,8 @@ public class Wildlink: RequestAdapter, RequestRetrier {
             ]
         
         sessionManager.request(queryUrl, method: .get, parameters: [:], encoding: URLEncoding.default, headers: headers)
+            .validate(statusCode: 200..<300)
+            .validate(contentType: ["application/json"])
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
@@ -356,7 +372,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
                     completion(nil, error as Error)
                 }
-        }
+            }
     }
     
     // MARK: - RequestAdapter
@@ -388,21 +404,22 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     
     public func should(_ manager: SessionManager, retry request: Request, with error: Error, completion: @escaping RequestRetryCompletion) {
         lock.lock() ; defer { lock.unlock() }
-        
+
         if let response = request.task?.response as? HTTPURLResponse,
-            (response.statusCode == 403 || response.statusCode == 500) {
+            //only retry on 5XX errors
+            (response.statusCode >= 500 &&  response.statusCode < 600) {
             requestsToRetry.append(completion)
-            
+
             if !isRefreshing {
                 refreshDeviceToken { [weak self] succeeded, deviceToken, deviceKey, deviceId  in
                     guard let strongSelf = self else { return }
-                    
+
                     strongSelf.lock.lock() ; defer { strongSelf.lock.unlock() }
-                    
+
                     if let localDeviceToken = deviceToken {
                         strongSelf.deviceToken = localDeviceToken
                     }
-                    
+
                     strongSelf.requestsToRetry.forEach { $0(succeeded, 0.0) }
                     strongSelf.requestsToRetry.removeAll()
                 }
@@ -444,6 +461,8 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         }
         
         sessionManager.request(queryUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .validate(statusCode: 200..<300)
+            .validate(contentType: ["application/json"])
             .responseJSON { [weak self] response in
                 guard let strongSelf = self else { return }
                 switch response.result {
@@ -463,7 +482,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     completion(false, nil, nil, nil)
                 }
                 strongSelf.isRefreshing = false
-        }
+            }
     }
     
     private func parseResponseHeaders(_ response: HTTPURLResponse?) {
