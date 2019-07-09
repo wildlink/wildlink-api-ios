@@ -5,9 +5,7 @@ platform:ios, '10.0'
 target 'Wildlink_Example' do
   pod 'Wildlink', :path => '../'
 
-  target 'Wildlink_Tests' do
-    inherit! :search_paths
-
-    
+  target 'Wildlink_ExampleTests' do
+    pod 'Wildlink', :path => '../', :testspecs => ['Tests']
   end
 end

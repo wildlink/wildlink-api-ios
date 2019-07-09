@@ -52,6 +52,16 @@
                ReferencedContainer = "container:Wildlink.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0237FB7522C9B7F9002AA189"
+               BuildableName = "Wildlink_ExampleTests.xctest"
+               BlueprintName = "Wildlink_ExampleTests"
+               ReferencedContainer = "container:Wildlink.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

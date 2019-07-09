@@ -12,8 +12,13 @@ Pod::Spec.new do |s|
   s.swift_versions = '5.0'
 
   #source file listsings
-  s.source_files = 'wildlink/Classes/**/*'
+  s.source_files = 'Wildlink/Classes/**/*'
 
   #dependencies
   s.dependency 'Alamofire', '~> 4.8.2'
+  
+  #tests
+  s.test_spec 'Tests' do |test_spec|
+      test_spec.source_files = 'Wildlink/Tests/*.swift'
+  end
 end
