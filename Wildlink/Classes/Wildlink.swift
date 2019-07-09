@@ -67,6 +67,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     static var appID = ""
     private var isRefreshing = false
     private var requestsToRetry: [RequestRetryCompletion] = []
+    private let queue = DispatchQueue(label: "com.wildlink.response-queue", qos: .utility, attributes: [.concurrent])
     
     //public variables, methods
     public static let shared = Wildlink()
@@ -130,7 +131,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         sessionManager.request(queryUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
-            .responseJSON { response in
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? [String: Any], let vanityUrlString = json["VanityURL"] as? String {
@@ -149,7 +150,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
                     completion(nil, error as Error)
                 }
-            }
+            })
     }
     
     // Generate a Wildlink URL string from a string object. Helper wrapper around the URL version.
@@ -191,7 +192,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         sessionManager.request(queryUrl, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
-            .responseJSON { response in
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? Array<[String: Any]> {
@@ -209,7 +210,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
                     completion(nil, error as Error)
                 }
-            }
+            })
     }
     
     // Get the commission statistics for this user.
@@ -226,7 +227,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         sessionManager.request(queryUrl, method: .get, parameters: [:], encoding: URLEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
-            .responseJSON {response in
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? [String: Any] {
@@ -244,7 +245,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
                     completion(nil, error as Error)
                 }
-            }
+            })
     }
     
     // Get the details about commissions earned by the user.
@@ -261,7 +262,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         sessionManager.request(queryUrl, method: .get, parameters: [:], encoding: URLEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
-            .responseJSON {response in
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? Array<[String: Any]> {
@@ -279,7 +280,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
                     completion(nil, error as Error)
                 }
-            }
+            })
     }
     
     public func searchMerchants(ids: [String], names: [String], q: String?, disabled: Bool?, featured: Bool?, sortBy: WildlinkSortBy?, sortOrder: WildlinkSortOrder?, limit: Int?, _ completion: @escaping (_ merchants: [Merchant], _ error: Error?) -> ()) {
@@ -325,7 +326,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         sessionManager.request(queryUrl, method: .get, parameters: [:], encoding: URLEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
-            .responseJSON { response in
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? [String : Any], let array = json["Merchants"] as? Array<[String:Any]> {
@@ -340,7 +341,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
                     completion([], error as Error)
                 }
-            }
+            })
     }
     
     public func getMerchantByID(_ id: String, _ completion: @escaping (_ merchant: Merchant?, _ error: Error?) -> ()) {
@@ -354,7 +355,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         sessionManager.request(queryUrl, method: .get, parameters: [:], encoding: URLEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
-            .responseJSON { response in
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? [String: Any] {
@@ -372,7 +373,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
                     completion(nil, error as Error)
                 }
-            }
+            })
     }
     
     // MARK: - RequestAdapter
@@ -463,7 +464,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         sessionManager.request(queryUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
-            .responseJSON { [weak self] response in
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { [weak self] response in
                 guard let strongSelf = self else { return }
                 switch response.result {
                 case .success(let value):
@@ -482,7 +483,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     completion(false, nil, nil, nil)
                 }
                 strongSelf.isRefreshing = false
-            }
+            })
     }
     
     private func parseResponseHeaders(_ response: HTTPURLResponse?) {

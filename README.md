@@ -52,6 +52,16 @@ Wildlink.shared.delegate = self
 Wildlink.shared.initialize(appId: "<yourAppID>", appSecret: "<yourAppSecret", wildlinkDeviceToken: "<existingUserToken>", wildlinkDeviceKey: "<existingUserKey>")
 ```
 
+### A Note On Callbacks
+In order to avoid blocking the main UI thread, Wildlink utilizes an internal processing queue to handle server
+responses. Completion handlers may be called on any thread, so if you're updating a UI element with the contents
+of a callback, be sure to wrap the UI calls in the main thread:
+```swift
+DispatchQueue.main.async {
+    self.urlOutlet.text = url.absoluteString
+}
+```
+
 #### Full example AppDelegate implementation
 
 ```swift
