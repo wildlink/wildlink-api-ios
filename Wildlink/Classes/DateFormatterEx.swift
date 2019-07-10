@@ -18,13 +18,14 @@ extension Formatter {
         return formatter
     }()
 }
-extension Date {
+
+public extension Date {
     var iso8601: String {
         return Formatter.iso8601.string(from: self)
     }
 }
 
-extension String {
+public extension String {
     var dateFromISO8601: Date? {
         return Formatter.iso8601.date(from: self)   // "Mar 22, 2017, 10:22 AM"
     }
