@@ -1,5 +1,6 @@
 # Wildlink API for iOS
-[![Swift Version][swift-image]][swift-url]
+[![Swift Version][swift-image-5]][swift-url]
+[![Swift Version][swift-image-4]][swift-url]
 [![License][license-image]][license-url]
 <!--[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)-->
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/EZSwiftExtensions.svg)](https://img.shields.io/cocoapods/v/LFAlertController.svg)
@@ -31,7 +32,7 @@ platform:ios, '10.0'
 
 
 target 'Wildlink_Example' do
-  pod 'Wildlink', '~> 1.0.2'
+  pod 'Wildlink', '~> 1.0.3'
 end
 ```
 
@@ -166,7 +167,8 @@ Distributed under the MIT license. See ``LICENSE`` for more information.
 
 [https://github.com/wildlink/wildlink-api-ios](https://github.com/wildlink/)
 
-[swift-image]:https://img.shields.io/badge/swift-5.0-orange.svg
+[swift-image-5]:https://img.shields.io/badge/swift-5.0-orange.svg
+[swift-image-4]:https://img.shields.io/badge/swift-4.2-orange.svg
 [swift-url]: https://swift.org/
 [license-image]: https://img.shields.io/badge/License-MIT-blue.svg
 [license-url]: LICENSE
