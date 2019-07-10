@@ -19,10 +19,26 @@ class DateFormatterExTests: XCTestCase {
     }
 
     func testUTCDateFromString() {
-        let string = "2017-09-12T22:00:00Z"
-        //needs updated to test the actual date object that's returned
-        guard let _ = string.dateFromUTC else {
-            return XCTFail()
-        }
+        let string = "1970-01-01T00:00:00Z"
+        let date = string.dateFromUTC
+        XCTAssertEqual(date, Date.init(timeIntervalSince1970: 0))
+    }
+    
+    func testUTCStringFromDate() {
+        let date = Date.init(timeIntervalSince1970: 0)
+        let string = date.utc
+        XCTAssertEqual(string, "1970-01-01T00:00:00Z")
+    }
+    
+    func testISO8601DateFromString() {
+        let string = "1970-01-01T00:00:00.000Z"
+        let date = string.dateFromISO8601
+        XCTAssertEqual(date, Date.init(timeIntervalSince1970: 0))
+    }
+    
+    func testISO8601StringFromDate() {
+        let date = Date.init(timeIntervalSince1970: 0)
+        let string = date.iso8601
+        XCTAssertEqual(string, "1970-01-01T00:00:00.000Z")
     }
 }
