@@ -27,21 +27,44 @@ class ViewController: UIViewController {
                 }
                 sleep(2)
                 Wildlink.shared.getClickStats(from: Date(timeIntervalSinceNow: -604800), with: .hour, completion: { (results, error) in
-                    print("Click stats error: \(String(describing: error))")
+                    if let error = error {
+                        log(error, with: "Click stats")
+                    }
                     print("Click stats results: \(String(describing: results))")
                 })
                 Wildlink.shared.getCommissionSummary({ (stats, error) in
-                    print("Commission summary error: \(String(describing: error))")
+                    if let error = error {
+                        log(error, with: "Commission summary")
+                    }
                     print("Commission summary results: \(String(describing: stats))")
                 })
                 Wildlink.shared.getMerchantByID("5476062", { (merchant, error) in
-                    print("Merchant data error: \(String(describing: error))")
+                    if let error = error {
+                        log(error, with: "Merchant data")
+                    }
                     print("Merchant data results: \(String(describing: merchant))")
                 })
                 Wildlink.shared.searchMerchants(ids: [], names: [], q: nil, disabled: nil, featured: true, sortBy: nil, sortOrder: nil, limit: nil, { (merchants, error) in
-                    print("List of merchants error: \(String(describing: error))")
+                    if let error = error {
+                        log(error, with: "List of merchants")
+                    }
                     print("List of merchants results: \(merchants)")
                 })
+            }
+        }
+        
+        func log(_ error: WildlinkError, with prefix: String) {
+            switch error.kind {
+            case .invalidResponse:
+                print("\(prefix): Unknown invalid response from the server")
+            case .invalidURL:
+                print("\(prefix): You provided an invalid URL to the API")
+            case .serverError(let subError):
+                //Wildlink will respond with a JSON dictionary ([String : Any] type) if there's an error code with
+                //the ErrorMessage key holding the reason
+                print("\(prefix): Error message: \(String(describing: error.errorData["ErrorMessage"]))")
+                print("\(prefix): Error data: \(String(describing: error))")
+                print("\(prefix): Top-level error: \(String(describing: subError))")
             }
         }
     }
