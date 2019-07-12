@@ -1,8 +1,7 @@
 os: osx
 osx_image: xcode10.2
-branches:
-  only:
-    - master
+before_install:
+  - gem install cocoapods -v '1.7.3'
 cache: bundler
 env:
   global:
