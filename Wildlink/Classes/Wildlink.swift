@@ -20,9 +20,15 @@ public protocol WildlinkDelegate : class {
 }
 
 // List of possible Error cases from the Wildlink SDK.
-public enum WildlinkError: Error {
-    case invalidURL
-    case invalidResponse
+public struct WildlinkError: Error {
+    public enum WildlinkErrorKind: Error {
+        case invalidURL
+        case invalidResponse
+        case serverError(Error)
+    }
+    
+    public let errorData: [String : Any]
+    public let kind: WildlinkErrorKind
 }
 
 // Enum to be used when requesting segmented query results.
@@ -67,6 +73,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     static var appID = ""
     private var isRefreshing = false
     private var requestsToRetry: [RequestRetryCompletion] = []
+    private let queue = DispatchQueue(label: "com.wildlink.response-queue", qos: .utility, attributes: [.concurrent])
     
     //public variables, methods
     public static let shared = Wildlink()
@@ -114,7 +121,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     //
     // - parameter originalURL:     The URL object the user would like to convert to a Wildlink.
     // - parameter completion:      Completion closure to be called once the URL is converted to a Wildlink
-    public func createVanityURL(from originalURL: URL, _ completion: @escaping(_ url: URL?, _ error: Error?) -> ()) {
+    public func createVanityURL(from originalURL: URL, _ completion: @escaping(_ url: URL?, _ error: WildlinkError?) -> ()) {
         let queryUrl = baseUrl.appendingPathComponent("vanity")
         
         // Add Headers
@@ -129,7 +136,8 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         
         sessionManager.request(queryUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
-            .responseJSON { response in
+            .validate(contentType: ["application/json"])
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? [String: Any], let vanityUrlString = json["VanityURL"] as? String {
@@ -138,22 +146,22 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                         self.parseResponseHeaders(response.response)
                     }
                     else {
-                        completion(nil, WildlinkError.invalidResponse)
+                        completion(nil, WildlinkError(errorData: [:], kind: .invalidResponse))
                     }
                     
                 case .failure(let error):
-                    completion(nil, error as Error)
+                    completion(nil, self.generateWildlinkError(from: response.data, with: error))
                 }
-        }
+            })
     }
     
     // Generate a Wildlink URL string from a string object. Helper wrapper around the URL version.
     //
     // - parameter originalURL:     The URL object the user would like to convert to a Wildlink.
     // - parameter completion:      Completion closure to be called once the URL is converted to a Wildlink
-    public func createVanityURL(from originalURL: String, _ completion: @escaping (_ url: URL?, _ error: Error?) -> ()) {
+    public func createVanityURL(from originalURL: String, _ completion: @escaping (_ url: URL?, _ error: WildlinkError?) -> ()) {
         guard let url = URL(string: originalURL) else {
-            completion(nil, WildlinkError.invalidURL)
+            completion(nil, WildlinkError(errorData: [:], kind: .invalidURL))
             return
         }
         createVanityURL(from: url, completion)
@@ -166,7 +174,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     // - parameter end:             Optional Date object defining the end of the query period. If `nil`, Date.Now is used.
     // - parameter segmentation:    Separate the response by hour, day, month or year. Defaults to day.
     // - parameter completion:      Completion closure to be called once the stats are computed and downloaded.
-    public func getClickStats(from start: Date, to end: Date? = nil, with segmentation: TimePeriod = .day, completion: @escaping (_ stats: [ClickStats]?, _ error: Error?) -> ()) {
+    public func getClickStats(from start: Date, to end: Date? = nil, with segmentation: TimePeriod = .day, completion: @escaping (_ stats: [ClickStats]?, _ error: WildlinkError?) -> ()) {
         let queryUrl = baseUrl.appendingPathComponent("device/stats/clicks")
         
         // Add Headers
@@ -185,7 +193,8 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         
         sessionManager.request(queryUrl, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
-            .responseJSON {response in
+            .validate(contentType: ["application/json"])
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? Array<[String: Any]> {
@@ -193,23 +202,19 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                         completion(arr, nil)
                         self.parseResponseHeaders(response.response)
                     } else {
-                        completion(nil, WildlinkError.invalidResponse)
+                        completion(nil, WildlinkError(errorData: [:], kind: .invalidResponse))
                     }
-                    
+
                 case .failure(let error):
-                    if let data = response.data,
-                        let info = String(data: data, encoding: .utf8) {
-                        Logger.error(info)
-                    }
-                    completion(nil, error as Error)
+                    completion(nil, self.generateWildlinkError(from: response.data, with: error))
                 }
-        }
+            })
     }
     
     // Get the commission statistics for this user.
     //
     // - parameter completion:      Completion closure to be called once the commission statisticas are computed and downloaded.
-    public func getCommissionSummary(_ completion: @escaping (_ stats: CommissionStats?, _ error: Error?) -> ()) {
+    public func getCommissionSummary(_ completion: @escaping (_ stats: CommissionStats?, _ error: WildlinkError?) -> ()) {
         let queryUrl = baseUrl.appendingPathComponent("device/stats/commission-summary")
         
         // Add Headers
@@ -219,7 +224,8 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         
         sessionManager.request(queryUrl, method: .get, parameters: [:], encoding: URLEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
-            .responseJSON {response in
+            .validate(contentType: ["application/json"])
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? [String: Any] {
@@ -227,23 +233,19 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                         completion(stats, nil)
                         self.parseResponseHeaders(response.response)
                     } else {
-                        completion(nil, WildlinkError.invalidResponse)
+                        completion(nil, WildlinkError(errorData: [:], kind: .invalidResponse))
                     }
                     
                 case .failure(let error):
-                    if let data = response.data,
-                        let info = String(data: data, encoding: .utf8) {
-                        Logger.error(info)
-                    }
-                    completion(nil, error as Error)
+                    completion(nil, self.generateWildlinkError(from: response.data, with: error))
                 }
-        }
+            })
     }
     
     // Get the details about commissions earned by the user.
     //
     // - parameter completion:      Completion closure to be called when the results have been downloaded.
-    public func getCommissionDetails(_ completion: @escaping (_ details: [CommissionDetails]?, _ error: Error?) -> ()) {
+    public func getCommissionDetails(_ completion: @escaping (_ details: [CommissionDetails]?, _ error: WildlinkError?) -> ()) {
         let queryUrl = baseUrl.appendingPathComponent("device/stats/commission-detail")
         
         // Add Headers
@@ -253,7 +255,8 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         
         sessionManager.request(queryUrl, method: .get, parameters: [:], encoding: URLEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
-            .responseJSON {response in
+            .validate(contentType: ["application/json"])
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? Array<[String: Any]> {
@@ -261,20 +264,16 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                         completion(arr, nil)
                         self.parseResponseHeaders(response.response)
                     } else {
-                        completion(nil, WildlinkError.invalidResponse)
+                        completion(nil, WildlinkError(errorData: [:], kind: .invalidResponse))
                     }
                     
                 case .failure(let error):
-                    if let data = response.data,
-                        let info = String(data: data, encoding: .utf8) {
-                        Logger.error(info)
-                    }
-                    completion(nil, error as Error)
+                    completion(nil, self.generateWildlinkError(from: response.data, with: error))
                 }
-        }
+            })
     }
     
-    public func searchMerchants(ids: [String], names: [String], q: String?, disabled: Bool?, featured: Bool?, sortBy: WildlinkSortBy?, sortOrder: WildlinkSortOrder?, limit: Int?, _ completion: @escaping (_ merchants: [Merchant], _ error: Error?) -> ()) {
+    public func searchMerchants(ids: [String], names: [String], q: String?, disabled: Bool?, featured: Bool?, sortBy: WildlinkSortBy?, sortOrder: WildlinkSortOrder?, limit: Int?, _ completion: @escaping (_ merchants: [Merchant], _ error: WildlinkError?) -> ()) {
         var components = URLComponents(url: baseUrl, resolvingAgainstBaseURL: true)
         
         //build the id query section
@@ -316,7 +315,8 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         
         sessionManager.request(queryUrl, method: .get, parameters: [:], encoding: URLEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
-            .responseJSON { response in
+            .validate(contentType: ["application/json"])
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? [String : Any], let array = json["Merchants"] as? Array<[String:Any]> {
@@ -325,16 +325,12 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     }
 
                 case .failure(let error):
-                    if let data = response.data,
-                        let info = String(data: data, encoding: .utf8) {
-                        Logger.error(info)
-                    }
-                    completion([], error as Error)
+                    completion([], self.generateWildlinkError(from: response.data, with: error))
                 }
-        }
+            })
     }
     
-    public func getMerchantByID(_ id: String, _ completion: @escaping (_ merchant: Merchant?, _ error: Error?) -> ()) {
+    public func getMerchantByID(_ id: String, _ completion: @escaping (_ merchant: Merchant?, _ error: WildlinkError?) -> ()) {
         let queryUrl = baseUrl.appendingPathComponent("merchant/\(id)")
         
         // Add Headers
@@ -344,7 +340,8 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         
         sessionManager.request(queryUrl, method: .get, parameters: [:], encoding: URLEncoding.default, headers: headers)
             .validate(statusCode: 200..<300)
-            .responseJSON { response in
+            .validate(contentType: ["application/json"])
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { response in
                 switch response.result {
                 case .success(let value):
                     if let json = value as? [String: Any] {
@@ -352,17 +349,13 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                         completion(merchant, nil)
                         self.parseResponseHeaders(response.response)
                     } else {
-                        completion(nil, WildlinkError.invalidResponse)
+                        completion(nil, WildlinkError(errorData: [:], kind: .invalidResponse))
                     }
                     
                 case .failure(let error):
-                    if let data = response.data,
-                        let info = String(data: data, encoding: .utf8) {
-                        Logger.error(info)
-                    }
-                    completion(nil, error as Error)
+                    completion(nil, self.generateWildlinkError(from: response.data, with: error))
                 }
-        }
+            })
     }
     
     // MARK: - RequestAdapter
@@ -394,21 +387,22 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     
     public func should(_ manager: SessionManager, retry request: Request, with error: Error, completion: @escaping RequestRetryCompletion) {
         lock.lock() ; defer { lock.unlock() }
-        
+
         if let response = request.task?.response as? HTTPURLResponse,
-            (response.statusCode == 403 || response.statusCode == 500) {
+            //only retry on 5XX errors
+            (response.statusCode >= 500 &&  response.statusCode < 600) {
             requestsToRetry.append(completion)
-            
+
             if !isRefreshing {
                 refreshDeviceToken { [weak self] succeeded, deviceToken, deviceKey, deviceId  in
                     guard let strongSelf = self else { return }
-                    
+
                     strongSelf.lock.lock() ; defer { strongSelf.lock.unlock() }
-                    
+
                     if let localDeviceToken = deviceToken {
                         strongSelf.deviceToken = localDeviceToken
                     }
-                    
+
                     strongSelf.requestsToRetry.forEach { $0(succeeded, 0.0) }
                     strongSelf.requestsToRetry.removeAll()
                 }
@@ -450,21 +444,28 @@ public class Wildlink: RequestAdapter, RequestRetrier {
         }
         
         sessionManager.request(queryUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-            .responseJSON { [weak self] response in
+            .validate(statusCode: 200..<300)
+            .validate(contentType: ["application/json"])
+            .responseJSON(queue: queue, options: .allowFragments, completionHandler: { [weak self] response in
                 guard let strongSelf = self else { return }
-                
-                if let json = response.result.value as? [String: Any],
-                    let deviceToken = json["DeviceToken"] as? String {
-                    let deviceKey = json["DeviceKey"] as? String
-                    let deviceId = json["DeviceId"] as? String
-                    completion(true, deviceToken, deviceKey, deviceId)
-                } else {
-                    print((response.result.value as! [String: Any])["ErrorMessage"] as! String)
+                switch response.result {
+                case .success(let value):
+                    
+                    if let json = value as? [String: Any],
+                        let deviceToken = json["DeviceToken"] as? String {
+                        let deviceKey = json["DeviceKey"] as? String
+                        let deviceId = json["DeviceId"] as? String
+                        completion(true, deviceToken, deviceKey, deviceId)
+                    } else {
+                        Logger.error("Failed to refresh device token: \(String(describing: response.result))")
+                        completion(false, nil, nil, nil)
+                    }
+                case .failure:
+                    Logger.error("Failed to refresh device token: \(String(describing: response.result))")
                     completion(false, nil, nil, nil)
                 }
-                
                 strongSelf.isRefreshing = false
-        }
+            })
     }
     
     private func parseResponseHeaders(_ response: HTTPURLResponse?) {
@@ -499,6 +500,15 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     func update(id: String) {
         self.deviceId = id
         Wildlink.shared.delegate?.didReceive(deviceId: id)
+    }
+
+    // Helper function to generate the WildlinkError associated with a given API request
+    func generateWildlinkError(from response: Data?, with error: Error) -> WildlinkError {
+        guard let data = response, let jsonDict = try? JSONSerialization.jsonObject(with: data) as? [String : Any] else {
+            return WildlinkError(errorData: [:], kind: .serverError(error))
+        }
+        Logger.error("\(String(describing: jsonDict))")
+        return WildlinkError(errorData: jsonDict, kind: .serverError(error))
     }
 }
 

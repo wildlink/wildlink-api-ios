@@ -13,15 +13,17 @@ class Logger {
     init() {}
     
     class func info(_ message: String) {
-        
-        let output = "[INFO.SDK] \(message)"
+#if DEBUG
+        let output = "[WILDLINK.INFO] \(message)"
         print(output)
+#endif
     }
 
     class func error(_ message: String) {
-        
-        let output = "[ERROR.SDK] \(message)"
+#if DEBUG
+        let output = "[WILDLINK.ERROR] \(message)"
         print(output)
+#endif
     }
 
 }

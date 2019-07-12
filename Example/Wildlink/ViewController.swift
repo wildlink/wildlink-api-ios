@@ -18,24 +18,53 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        sleep(2)
-        Wildlink.shared.createVanityURL(from: urlOutlet.text) { (url, error) in
+        guard let urlText = urlOutlet.text else { return }
+        sleep(5)
+        Wildlink.shared.createVanityURL(from: urlText) { (url, error) in
             if let url = url {
-                self.urlOutlet.text = url.absoluteString
+                DispatchQueue.main.async {
+                    self.urlOutlet.text = url.absoluteString
+                }
                 sleep(2)
                 Wildlink.shared.getClickStats(from: Date(timeIntervalSinceNow: -604800), with: .hour, completion: { (results, error) in
-                    print("Click stats: \(String(describing: results))")
+                    if let error = error {
+                        log(error, with: "Click stats")
+                    }
+                    print("Click stats results: \(String(describing: results))")
                 })
                 Wildlink.shared.getCommissionSummary({ (stats, error) in
-                    print("Commission summary: \(String(describing: stats))")
+                    if let error = error {
+                        log(error, with: "Commission summary")
+                    }
+                    print("Commission summary results: \(String(describing: stats))")
                 })
                 Wildlink.shared.getMerchantByID("5476062", { (merchant, error) in
-                    print("Merchant data: \(String(describing: merchant))")
+                    if let error = error {
+                        log(error, with: "Merchant data")
+                    }
+                    print("Merchant data results: \(String(describing: merchant))")
                 })
                 Wildlink.shared.searchMerchants(ids: [], names: [], q: nil, disabled: nil, featured: true, sortBy: nil, sortOrder: nil, limit: nil, { (merchants, error) in
-                    print("List of merchants: \(merchants)")
+                    if let error = error {
+                        log(error, with: "List of merchants")
+                    }
+                    print("List of merchants results: \(merchants)")
                 })
+            }
+        }
+        
+        func log(_ error: WildlinkError, with prefix: String) {
+            switch error.kind {
+            case .invalidResponse:
+                print("\(prefix): Unknown invalid response from the server")
+            case .invalidURL:
+                print("\(prefix): You provided an invalid URL to the API")
+            case .serverError(let subError):
+                //Wildlink will respond with a JSON dictionary ([String : Any] type) if there's an error code with
+                //the ErrorMessage key holding the reason
+                print("\(prefix): Error message: \(String(describing: error.errorData["ErrorMessage"]))")
+                print("\(prefix): Error data: \(String(describing: error))")
+                print("\(prefix): Top-level error: \(String(describing: subError))")
             }
         }
     }
