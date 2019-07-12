@@ -21,7 +21,7 @@ script:
   # probably be fine.
   - if [ $RUN_TESTS == "YES" ]; then
       cd Example && pod install && xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ENABLE_TESTABILITY=YES test | xcpretty;
-      cd ..
+      cd ..;
     fi
 
   # Run `pod lib lint` if specified
