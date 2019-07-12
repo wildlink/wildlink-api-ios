@@ -1,4 +1,5 @@
 # Wildlink API for iOS
+[![Build Status](https://travis-ci.com/wildlink/wildlink-api-ios.svg?branch=master)](https://travis-ci.com/wildlink/wildlink-api-ios)
 [![Swift Version][swift-image-5]][swift-url]
 [![Swift Version][swift-image-4]][swift-url]
 [![License][license-image]][license-url]
