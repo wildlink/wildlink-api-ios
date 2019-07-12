@@ -3,12 +3,11 @@ osx_image: xcode10.2
 before_install:
   - gem install cocoapods -v '1.7.4'
 cache: bundler
-podfile: Example/Podfile
 env:
   global:
   - LC_CTYPE=en_US.UTF-8
   - LANG=en_US.UTF-8
-  - WORKSPACE=Example/Wildlink.xcworkspace
+  - WORKSPACE=Wildlink.xcworkspace
   - IOS_FRAMEWORK_SCHEME="Wildlink-Unit-Tests"
   matrix:
     - DESTINATION="OS=12.2,name=iPhone XS"       SCHEME="$IOS_FRAMEWORK_SCHEME" RUN_TESTS="YES" BUILD_EXAMPLE="YES" POD_LINT="YES"
@@ -17,12 +16,12 @@ script:
   - xcodebuild -version
   - xcodebuild -showsdks
 
-  # Build Framework in Release and Run Tests if specified
   # This is redundant to pod lib lint, but gives a better view
   # of the testing pass. We could do just one of the two and
   # probably be fine.
   - if [ $RUN_TESTS == "YES" ]; then
-      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ENABLE_TESTABILITY=YES test | xcpretty;
+      cd Example && pod install && xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ENABLE_TESTABILITY=YES test | xcpretty;
+      cd ..
     fi
 
   # Run `pod lib lint` if specified
