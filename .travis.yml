@@ -20,8 +20,10 @@ script:
 
   # Build Framework in Release and Run Tests if specified
   - if [ $RUN_TESTS == "YES" ]; then
-      #go into the test directory to run the tests, then back out so we can run pod lint
-      cd Example && pod install && xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ENABLE_TESTABILITY=YES test | xcpretty && cd ..;
+      #go into the test directory to run the tests
+      cd Example && pod install && xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ENABLE_TESTABILITY=YES test | xcpretty;
+      #back up a directory to do pod lint
+      cd ..
     fi
 
   # Run `pod lib lint` if specified
