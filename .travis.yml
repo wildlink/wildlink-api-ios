@@ -23,7 +23,7 @@ script:
       #go into the test directory to run the tests
       cd Example && pod install && xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ENABLE_TESTABILITY=YES test | xcpretty;
       #back up a directory to do pod lint
-      cd ..
+      cd ..;
     fi
 
   # Run `pod lib lint` if specified
