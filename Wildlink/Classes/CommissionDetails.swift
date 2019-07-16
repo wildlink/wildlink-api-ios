@@ -33,7 +33,7 @@ public struct CommissionDetails {
             "CommissionIDs": commissionIds,
             "Date": date.utc,
             "Amount": amount,
-            "Status": status,
+            "Status": status.rawValue,
             "Merchant": merchant
         ]
     }
