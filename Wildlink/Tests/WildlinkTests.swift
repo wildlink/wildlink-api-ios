@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import Wildlink
+@testable import Wildlink
 
 class WildlinkTests: XCTestCase {
     func testInitializeSDKWithNilDeviceInfo() {

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Wildlink'
-  s.version          = '1.0.3'
+  s.version          = '1.0.4'
   s.summary          = 'You can use this CocoaPod to interact with the Wildlink API'
 
   s.homepage         = 'https://wildlink.me'
