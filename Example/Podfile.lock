@@ -1,8 +1,8 @@
 PODS:
   - Alamofire (4.8.2)
-  - Wildlink (1.0.3):
+  - Wildlink (1.0.4):
     - Alamofire (~> 4.8.2)
-  - Wildlink/Tests (1.0.3):
+  - Wildlink/Tests (1.0.4):
     - Alamofire (~> 4.8.2)
 
 DEPENDENCIES:
@@ -19,8 +19,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  Wildlink: 632a5dbd5518620f70035191b60a5378785162df
+  Wildlink: 068f19c459aa8d5780c684ab08de1a2bf091ee35
 
 PODFILE CHECKSUM: ebc74e7f624558182cd7f10e0ae346ced9843b6a
 
-COCOAPODS: 1.7.3
+COCOAPODS: 1.7.4

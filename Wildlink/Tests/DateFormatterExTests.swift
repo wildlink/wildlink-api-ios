@@ -7,7 +7,7 @@
 
 import Foundation
 import XCTest
-import Wildlink
+@testable import Wildlink
 
 class DateFormatterExTests: XCTestCase {
     override func setUp() {
