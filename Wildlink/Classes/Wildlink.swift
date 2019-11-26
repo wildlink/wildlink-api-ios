@@ -16,7 +16,7 @@ protocol JSONSerializable {
 public protocol WildlinkDelegate : class {
     func didReceive(deviceToken: String)
     func didReceive(deviceKey: String)
-    func didReceive(deviceId: String)
+    func didReceive(deviceId: UInt64)
 }
 
 // List of possible Error cases from the Wildlink SDK.
@@ -54,7 +54,7 @@ public enum WildlinkSortOrder: String {
 public class Wildlink: RequestAdapter, RequestRetrier {
     
     //private variables/methods
-    private typealias RefreshCompletion = (_ succeeded: Bool, _ deviceToken: String?, _ deviceKey: String?, _ deviceId: String?) -> Void
+    private typealias RefreshCompletion = (_ succeeded: Bool, _ deviceToken: String?, _ deviceKey: String?, _ deviceId: UInt64?) -> Void
     
     private let sessionManager: SessionManager = {
         let configuration = URLSessionConfiguration.default
@@ -67,7 +67,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     private var baseUrl: URL
     private var deviceToken = ""
     private var deviceKey: String?
-    private var deviceId: String?
+    private var deviceId: UInt64?
     private var senderToken = ""
     static var apiKey = ""
     static var appID = ""
@@ -454,7 +454,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     if let json = value as? [String: Any],
                         let deviceToken = json["DeviceToken"] as? String {
                         let deviceKey = json["DeviceKey"] as? String
-                        let deviceId = json["DeviceID"] as? String
+                        let deviceId = json["DeviceID"] as? UInt64
                         completion(true, deviceToken, deviceKey, deviceId)
                     } else {
                         Logger.error("Failed to refresh device token: \(String(describing: response.result))")
@@ -497,7 +497,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
     // Helper function to store an updated device identifier in memory and tell the delegate about it (if set)
     //
     // - parameter id:                  The new device ID
-    func update(id: String) {
+    func update(id: UInt64) {
         self.deviceId = id
         Wildlink.shared.delegate?.didReceive(deviceId: id)
     }

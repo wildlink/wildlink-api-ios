@@ -33,7 +33,7 @@ platform:ios, '10.0'
 
 
 target 'Wildlink_Example' do
-  pod 'Wildlink', '~> 1.0.5'
+  pod 'Wildlink', '~> 1.0.6'
 end
 ```
 
@@ -100,7 +100,7 @@ extension AppDelegate : WildlinkDelegate {
         defaults.set(deviceToken, forKey: "wildlinkDeviceToken")
     }
 
-    func didReceive(deviceId: String) {
+    func didReceive(deviceId: UInt64) {
         let defaults = UserDefaults.standard
         defaults.set(deviceId, forKey: "wildlinkDeviceId")
     }
