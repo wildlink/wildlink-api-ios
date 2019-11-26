@@ -454,7 +454,7 @@ public class Wildlink: RequestAdapter, RequestRetrier {
                     if let json = value as? [String: Any],
                         let deviceToken = json["DeviceToken"] as? String {
                         let deviceKey = json["DeviceKey"] as? String
-                        let deviceId = json["DeviceId"] as? String
+                        let deviceId = json["DeviceID"] as? String
                         completion(true, deviceToken, deviceKey, deviceId)
                     } else {
                         Logger.error("Failed to refresh device token: \(String(describing: response.result))")

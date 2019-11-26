@@ -1,8 +1,8 @@
 PODS:
   - Alamofire (4.8.2)
-  - Wildlink (1.0.4):
+  - Wildlink (1.0.5):
     - Alamofire (~> 4.8.2)
-  - Wildlink/Tests (1.0.4):
+  - Wildlink/Tests (1.0.5):
     - Alamofire (~> 4.8.2)
 
 DEPENDENCIES:
