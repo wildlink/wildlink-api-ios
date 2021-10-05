@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 import Wildlink
 
 class ViewController: UIViewController {
@@ -23,32 +24,27 @@ class ViewController: UIViewController {
         Wildlink.shared.createVanityURL(from: urlText) { (url, error) in
             if let url = url {
                 DispatchQueue.main.async {
-                    self.urlOutlet.text = url.absoluteString
+                    self.urlOutlet.text = url.vanityURL.absoluteString
                 }
                 sleep(2)
-                Wildlink.shared.getClickStats(from: Date(timeIntervalSinceNow: -604800), with: .hour, completion: { (results, error) in
-                    if let error = error {
-                        log(error, with: "Click stats")
-                    }
-                    print("Click stats results: \(String(describing: results))")
-                })
                 Wildlink.shared.getCommissionSummary({ (stats, error) in
                     if let error = error {
                         log(error, with: "Commission summary")
                     }
                     print("Commission summary results: \(String(describing: stats))")
                 })
-                Wildlink.shared.getMerchantByID("5476062", { (merchant, error) in
+                Wildlink.shared.getMerchantBy("5476062", { (merchant, error) in
                     if let error = error {
                         log(error, with: "Merchant data")
                     }
                     print("Merchant data results: \(String(describing: merchant))")
                 })
-                Wildlink.shared.searchMerchants(ids: [], names: [], q: nil, disabled: nil, featured: true, sortBy: nil, sortOrder: nil, limit: nil, { (merchants, error) in
+                Wildlink.shared.searchMerchants(ids: [], names: [], q: nil, disabled: nil, featured: nil, sortBy: nil, sortOrder: nil, limit: nil, { (merchants, error) in
                     if let error = error {
                         log(error, with: "List of merchants")
                     }
-                    print("List of merchants results: \(merchants)")
+                    print("List of merchants results: \(merchants.count)")
+                    print("\(String(describing: merchants.first(where: { $0.images.count > 0 }))) ")
                 })
             }
         }

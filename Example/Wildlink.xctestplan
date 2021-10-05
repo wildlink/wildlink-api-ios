@@ -1,0 +1,40 @@
+{
+  "configurations" : [
+    {
+      "id" : "27F6A6F5-53A7-4B8F-B102-39477FD44CA2",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:Pods\/Pods.xcodeproj",
+          "identifier" : "125C2A8B44D3BE9F6DDE2F72FB819783",
+          "name" : "Wildlink"
+        }
+      ]
+    },
+    "testExecutionOrdering" : "random"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Pods\/Pods.xcodeproj",
+        "identifier" : "CC780152B3021C7D84397BE1FA27DEDD",
+        "name" : "Wildlink-Unit-Tests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Wildlink.xcodeproj",
+        "identifier" : "02A0F22822D43ABA00979F78",
+        "name" : "Wildlink_ExampleTests"
+      }
+    }
+  ],
+  "version" : 1
+}

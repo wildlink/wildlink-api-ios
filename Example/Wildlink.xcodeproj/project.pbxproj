@@ -15,6 +15,8 @@
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		9BD439F3270F8F0200A476D9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD439F2270F8F0200A476D9 /* Constants.swift */; };
+		9BD439F4270F8F0900A476D9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD439F2270F8F0200A476D9 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		7789AF2650C0A232C4B5F607 /* Pods-Wildlink_Example-Wildlink_ExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wildlink_Example-Wildlink_ExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Wildlink_Example-Wildlink_ExampleTests/Pods-Wildlink_Example-Wildlink_ExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7A0238D73297FC83C4EE233B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		807ECB05FF0DE7F330B29B79 /* Pods-Wildlink_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wildlink_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Wildlink_Example/Pods-Wildlink_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		9BC1A843270BA31600A1AC18 /* Wildlink.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Wildlink.xctestplan; sourceTree = "<group>"; };
+		9BD439F2270F8F0200A476D9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		9E71604798F2009321675667 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		C63CEDC72C5FAE02F609F824 /* Pods-Wildlink_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wildlink_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wildlink_Example/Pods-Wildlink_Example.release.xcconfig"; sourceTree = "<group>"; };
 		FBC867498DEB3E16D4821594 /* Pods-Wildlink_Example-Wildlink_ExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wildlink_Example-Wildlink_ExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Wildlink_Example-Wildlink_ExampleTests/Pods-Wildlink_Example-Wildlink_ExampleTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -101,6 +105,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				9BC1A843270BA31600A1AC18 /* Wildlink.xctestplan */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for Wildlink */,
 				02A0F22A22D43ABA00979F78 /* Wildlink_ExampleTests */,
@@ -123,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
+				9BD439F2270F8F0200A476D9 /* Constants.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
@@ -344,6 +350,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02A0F22C22D43ABA00979F78 /* Wildlink_ExampleTests.swift in Sources */,
+				9BD439F4270F8F0900A476D9 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,6 +360,7 @@
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				9BD439F3270F8F0200A476D9 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

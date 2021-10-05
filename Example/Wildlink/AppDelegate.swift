@@ -13,14 +13,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         //initialize wildlink
         Wildlink.shared.delegate = self
         let defaults = UserDefaults.standard
-        Wildlink.shared.initialize(appId: "APP_ID", appSecret: "APP_SECRET", wildlinkDeviceToken: defaults.string(forKey: "wildlinkDeviceToken"), wildlinkDeviceKey: defaults.string(forKey: "wildlinkDeviceKey"))
+        Wildlink.shared.initialize(appId: Constants.appId, appSecret: Constants.appSecret, wildlinkDeviceToken: defaults.string(forKey: "wildlinkDeviceToken"), wildlinkDeviceKey: defaults.string(forKey: "wildlinkDeviceKey"))
         
         return true
     }
