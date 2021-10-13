@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Wildlink'
-  s.version          = '1.0.6'
+  s.version          = '2.0.0'
   s.summary          = 'You can use this CocoaPod to interact with the Wildlink API'
 
   s.homepage         = 'https://wildlink.me'
@@ -15,10 +15,12 @@ Pod::Spec.new do |s|
   s.source_files = 'Wildlink/Classes/**/*'
 
   #dependencies
-  s.dependency 'Alamofire', '~> 4.8.2'
+  s.dependency 'Alamofire', '~> 5.4.4'
   
   #tests
   s.test_spec 'Tests' do |test_spec|
       test_spec.source_files = 'Wildlink/Tests/*.swift'
+      test_spec.dependency 'OHHTTPStubs', '~> 9.1.0'
+      test_spec.dependency 'OHHTTPStubs/Swift', '~> 9.1.0'
   end
 end

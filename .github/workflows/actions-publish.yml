@@ -1,0 +1,67 @@
+name: CI Publish
+on:
+  push:
+    tags:
+    - '*'
+    
+jobs:
+  pod-lint:
+    runs-on: macos-11
+    steps:
+      - name: Select Xcode 13
+        uses: devbotsxyz/xcode-select@v1
+        with:
+          version: "13"
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Cache CocoaPods data
+        uses: actions/cache@v2
+        with:
+          path: Example/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+      - name: Run pod lib lint
+        run: |
+          bundle install
+          bundle exec fastlane lint
+  unit-tests:
+    runs-on: macos-11
+    needs: pod-lint
+    steps:
+      - name: Select Xcode 13
+        uses: devbotsxyz/xcode-select@v1
+        with:
+          version: "13"
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Cache CocoaPods data
+        uses: actions/cache@v2
+        with:
+          path: Example/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+      - name: Run the unit tests
+        run: |
+          bundle install
+          bundle exec fastlane test
+  # Since this runs free on hosted runners, don't optimize for minimum
+  # runtime. Instead, make sure we never publish something that doesn't
+  # pass both lint and unit testing, even after merges.
+  publish:
+    runs-on: macOS-11
+    needs: unit-tests
+    steps:
+      - name: Select Xcode 13
+        uses: devbotsxyz/xcode-select@v1
+        with:
+          version: "13"
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Publish to CocoaPods trunk
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: |
+          bundle install
+          bundle exec fastlane publish

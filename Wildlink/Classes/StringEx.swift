@@ -16,6 +16,7 @@ extension String {
         
         let digestLen = Int(CC_SHA256_DIGEST_LENGTH)
         let result = UnsafeMutablePointer<CUnsignedChar>.allocate(capacity: digestLen)
+        result.initialize(repeating: 0, count: digestLen)
         
         let keyStr = key.cString(using: String.Encoding.utf8)
         let keyLen = key.lengthOfBytes(using: String.Encoding.utf8)
@@ -24,7 +25,7 @@ extension String {
         
         CCHmac(algorithm, keyStr!, keyLen, str!, strLen, result)
         
-        let digest = stringFromResult(result: result, length: digestLen)
+        let digest = String.stringFrom(result, with: digestLen)
         
         result.deallocate()
         
@@ -32,10 +33,10 @@ extension String {
 
     }
     
-    private func stringFromResult(result: UnsafeMutablePointer<CUnsignedChar>, length: Int) -> String {
+    static func stringFrom(_ ptr: UnsafeMutablePointer<CUnsignedChar>, with length: Int) -> String {
         let hash = NSMutableString()
         for i in 0..<length {
-            hash.appendFormat("%02x", result[i])
+            hash.appendFormat("%02x", ptr[i])
         }
         return String(hash)
     }

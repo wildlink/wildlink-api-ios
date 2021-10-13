@@ -1,9 +1,26 @@
 PODS:
-  - Alamofire (4.8.2)
-  - Wildlink (1.0.6):
-    - Alamofire (~> 4.8.2)
-  - Wildlink/Tests (1.0.6):
-    - Alamofire (~> 4.8.2)
+  - Alamofire (5.4.4)
+  - OHHTTPStubs (9.1.0):
+    - OHHTTPStubs/Default (= 9.1.0)
+  - OHHTTPStubs/Core (9.1.0)
+  - OHHTTPStubs/Default (9.1.0):
+    - OHHTTPStubs/Core
+    - OHHTTPStubs/JSON
+    - OHHTTPStubs/NSURLSession
+    - OHHTTPStubs/OHPathHelpers
+  - OHHTTPStubs/JSON (9.1.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/NSURLSession (9.1.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/OHPathHelpers (9.1.0)
+  - OHHTTPStubs/Swift (9.1.0):
+    - OHHTTPStubs/Default
+  - Wildlink (2.0.0):
+    - Alamofire (~> 5.4.4)
+  - Wildlink/Tests (2.0.0):
+    - Alamofire (~> 5.4.4)
+    - OHHTTPStubs (~> 9.1.0)
+    - OHHTTPStubs/Swift (~> 9.1.0)
 
 DEPENDENCIES:
   - Wildlink (from `../`)
@@ -12,15 +29,17 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - OHHTTPStubs
 
 EXTERNAL SOURCES:
   Wildlink:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  Wildlink: 1698c8bde239ea342722aa7633b851354e3f530f
+  Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
+  OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
+  Wildlink: 675f527710f13d09b44a7681349eb224cc8789f4
 
-PODFILE CHECKSUM: ebc74e7f624558182cd7f10e0ae346ced9843b6a
+PODFILE CHECKSUM: e82b0dfe349c98fec62bc27a250c046f2ccedf50
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.11.2

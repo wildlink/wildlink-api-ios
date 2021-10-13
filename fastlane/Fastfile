@@ -1,0 +1,28 @@
+# vi: ft=ruby
+default_platform(:ios)
+
+platform :ios do
+  lane :test do
+    cocoapods(
+      podfile: "./Example/Podfile"
+    )
+    run_tests(
+      workspace: "./Example/Wildlink.xcworkspace",
+      devices: ["iPhone 12 Pro"],
+      scheme: "Wildlink-Example"
+    )
+  end
+
+  lane :lint do
+    pod_lib_lint()
+  end
+
+  lane :publish do
+    # Only call this on tags
+    version_bump_podspec(
+      path: "Wildlink.podspec",
+      version_number: sh("git", "describe", "--tags").strip
+    )
+    pod_push(path: "Wildlink.podspec")
+  end
+end

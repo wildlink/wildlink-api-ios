@@ -18,50 +18,40 @@ class MerchantTests: XCTestCase {
     }
     
     func testGoodDictionaryCreatesValidObject() {
-        let dictionary: [String : Any] = [
-            "ID": 5476062,
-            "Name": "B.O.R.N. Night Owl Forex Robot",
-            "Disabled": true,
-            "Featured": false,
-            "ShortCode": "2dUB3p3OAgw",
-            "ShortURL": "http://example.com/2dUB3p3OAgw",
-            "Images": []
-        ]
-        let stats: Merchant? = Merchant(dictionary: dictionary)
-        XCTAssertNotNil(stats)
+        let data = """
+    {
+      "ID": 8969,
+      "Name": "MAGIX u0026 VEGAS Creative Software",
+      "Disabled": false,
+      "Featured": false,
+      "ShortCode": "uOpXiUYg",
+      "ShortURL": "https://dev.wild.link/uOpXiUYg",
+      "BrowserExtensionDisabled": false,
+      "CashbackDisabled": false,
+      "ShareAndEarnDisabled": false,
+      "DeeplinkDisabled": false,
+      "Images": [
+        {
+          "ID": 1226,
+          "Kind": "LOGO",
+          "Ordinal": 1,
+          "ImageID": 1227,
+          "URL": "https://dev-images.wildlink.me/wl-image/e6bf024f8ebfdb49fc7926b2fac620c4b069e64e.jpeg",
+          "Width": 200,
+          "Height": 200
+        }
+      ]
+    }
+""".data(using: .utf8)!
+        let merchant = try? JSONDecoder().decode(Merchant.self, from: data)
+        XCTAssertNotNil(merchant)
     }
     
     func testBadDictionaryCreatesNilObject() {
-        let dictionary: [String : Any] = [
-            "Peroid": "hour",
-            "ClickDate": "2017-09-12T22:00:00Z",
-            "ClickCount": 351
-        ]
-        let stats: Merchant? = Merchant(dictionary: dictionary)
-        XCTAssertNil(stats)
-    }
-    
-    func testDictionaryReturn() {
-        let dictionary: [String : Any] = [
-            "ID": 5476062,
-            "Name": "B.O.R.N. Night Owl Forex Robot",
-            "Disabled": true,
-            "Featured": false,
-            "ShortCode": "2dUB3p3OAgw",
-            "ShortURL": "http://example.com/2dUB3p3OAgw",
-            "Images": []
-        ]
-        let stats: Merchant? = Merchant(dictionary: dictionary)
-        if let returnDictionary = stats?.dictionary {
-            XCTAssertEqual(dictionary["ID"] as? Int, returnDictionary["ID"] as? Int)
-            XCTAssertEqual(dictionary["Name"] as? String, returnDictionary["Name"] as? String)
-            XCTAssertEqual(dictionary["Disabled"] as? Bool, returnDictionary["Disabled"] as? Bool)
-            XCTAssertEqual(dictionary["Featured"] as? Bool, returnDictionary["Featured"] as? Bool)
-            XCTAssertEqual(dictionary["ShortCode"] as? String, returnDictionary["ShortCode"] as? String)
-            XCTAssertEqual(dictionary["ShortURL"] as? String, returnDictionary["ShortURL"] as? String)
-            XCTAssertEqual(dictionary["Images"] as? [String], returnDictionary["Images"] as? [String])
-        } else {
-            XCTFail()
-        }
+        let badData = """
+{"Period": "hour", "click": "xyz"}
+""".data(using: .utf8)!
+        let merchant = try? JSONDecoder().decode(Merchant.self, from: badData)
+        XCTAssertNil(merchant)
     }
 }
