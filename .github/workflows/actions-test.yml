@@ -7,11 +7,11 @@ jobs:
       - name: Select Xcode 13
         uses: devbotsxyz/xcode-select@v1
         with:
-          version: "13"
+          version: '13'
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Cache CocoaPods data
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: Example/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
@@ -28,11 +28,11 @@ jobs:
       - name: Select Xcode 13
         uses: devbotsxyz/xcode-select@v1
         with:
-          version: "13"
+          version: '13'
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Cache CocoaPods data
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: Example/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
