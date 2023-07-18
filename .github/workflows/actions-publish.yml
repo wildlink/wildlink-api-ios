@@ -6,12 +6,8 @@ on:
 
 jobs:
   pod-lint:
-    runs-on: macos-11
+    runs-on: macos-latest
     steps:
-      - name: Select Xcode 13
-        uses: devbotsxyz/xcode-select@v1
-        with:
-          version: '13'
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Cache CocoaPods data
@@ -26,13 +22,9 @@ jobs:
           bundle install
           bundle exec fastlane lint
   unit-tests:
-    runs-on: macos-11
+    runs-on: macos-latest
     needs: pod-lint
     steps:
-      - name: Select Xcode 13
-        uses: devbotsxyz/xcode-select@v1
-        with:
-          version: '13'
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Cache CocoaPods data
@@ -50,18 +42,20 @@ jobs:
   # runtime. Instead, make sure we never publish something that doesn't
   # pass both lint and unit testing, even after merges.
   publish:
-    runs-on: macOS-11
+    runs-on: macos-latest
     needs: unit-tests
     steps:
-      - name: Select Xcode 13
-        uses: devbotsxyz/xcode-select@v1
+      - name: Collect Secrets
+        id: op-load-secret
+        uses: 1password/load-secrets-action@v1.3.0
         with:
-          version: '13'
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          COCOAPODS_TRUNK_TOKEN: ${{ op://zbd36f6x6na5fczi43zkwes44y/zjsytd67inhsxkufmpxtukdojq/credential }}
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Publish to CocoaPods trunk
-        env:
-          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: |
           bundle install
           bundle exec fastlane publish
