@@ -47,12 +47,13 @@ jobs:
     steps:
       - name: Collect Secrets
         id: op-load-secret
-        uses: 1password/load-secrets-action@v1.3.0
+        uses: 1password/load-secrets-action@v1.3.1
         with:
           export-env: true
         env:
+          # Using SA: Automation Secrets, ID: y4mrwo3yadv72iwv3ijea2phfe
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          COCOAPODS_TRUNK_TOKEN: ${{ op://zbd36f6x6na5fczi43zkwes44y/zjsytd67inhsxkufmpxtukdojq/credential }}
+          COCOAPODS_TRUNK_TOKEN: op://zbd36f6x6na5fczi43zkwes44y/zjsytd67inhsxkufmpxtukdojq/credential
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Publish to CocoaPods trunk
