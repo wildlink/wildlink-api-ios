@@ -5,9 +5,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Cache CocoaPods data
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: Example/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
@@ -22,9 +22,9 @@ jobs:
     needs: pod-lint
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Cache CocoaPods data
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: Example/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
