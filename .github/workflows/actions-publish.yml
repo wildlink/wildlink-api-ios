@@ -9,7 +9,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Cache CocoaPods data
         uses: actions/cache@v3
         with:
@@ -26,7 +26,7 @@ jobs:
     needs: pod-lint
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Cache CocoaPods data
         uses: actions/cache@v3
         with:
@@ -47,7 +47,7 @@ jobs:
     steps:
       - name: Collect Secrets
         id: op-load-secret
-        uses: 1password/load-secrets-action@v1.3.1
+        uses: 1password/load-secrets-action@v3
         with:
           export-env: true
         env:
@@ -55,7 +55,7 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           COCOAPODS_TRUNK_TOKEN: op://zbd36f6x6na5fczi43zkwes44y/zjsytd67inhsxkufmpxtukdojq/credential
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Publish to CocoaPods trunk
         run: |
           bundle install
