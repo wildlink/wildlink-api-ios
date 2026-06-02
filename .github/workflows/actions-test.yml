@@ -7,7 +7,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Cache CocoaPods data
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: Example/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
@@ -24,7 +24,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
       - name: Cache CocoaPods data
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: Example/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
